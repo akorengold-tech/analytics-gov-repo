@@ -1,8 +1,9 @@
 import os
 import requests
-from mcp.server.mcpserver import MCPServer
+from mcp.server.fastmcp import FastMCP
 
-mcp = MCPServer("GSA DAP Analytics Explorer")
+# Initialize the MCP server using FastMCP
+mcp = FastMCP("GSA DAP Analytics Explorer")
 API_BASE_URL = "https://api.gsa.gov/analytics/dap/v2"
 
 def get_api_key():
@@ -13,6 +14,13 @@ def get_api_key():
 
 @mcp.tool()
 def get_dap_analytics(report: str, agency: str = None, domain: str = None) -> str:
+    """Fetches historical or real-time analytics data from the GSA Digital Analytics Program (DAP) API v2.
+    
+    Parameters:
+    - report: One of 'domain', 'download', 'second-level-domain', or 'top-pages-realtime'
+    - agency: Optional uppercase acronym (e.g. 'HHS', 'USDA', 'GSA')
+    - domain: Optional specific subdomain or domain to filter by (e.g., 'nlm.nih.gov')
+    """
     api_key = get_api_key()
     clean_domain = domain.strip().lower() if domain else ""
 
