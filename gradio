@@ -1,0 +1,29 @@
+import gradio as gr
+Substitute baseball-related prompts and attributes for analytics.gov related prompts and attributes
+# 1. Wrapper function for Gradio interface
+def gradio_chat_wrapper(message, history):
+    try:
+        return query_mlb_agent(message)
+    except Exception as e:
+        return f"An error occurred while executing the query: {str(e)}"
+
+# 2. Configure the web interface
+demo = gr.ChatInterface(
+    fn=gradio_chat_wrapper,
+    title="⚾️ MLB SLM Assistant (Qwen2.5 + StatsAPI)",
+    description="Ask historical baseball questions, look up player information, check statistics, or query player IDs directly!",
+    examples=[
+        "Who is the all-time leader in home runs?",
+        "Look up Barry Bonds player information",
+        "Search for Ted Williams player stats",
+        "Can you check the stats for Juan Soto?"
+    ]
+)
+
+# 3. Close existing instances and launch the app
+try:
+    demo.close()
+except:
+    pass
+
+demo.launch(share=True)
